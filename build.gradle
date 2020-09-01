@@ -1,0 +1,43 @@
+// to fix https://stackoverflow.com/questions/46439562/after-adding-sqlserver-dependency-to-gradle-jar-cant-find-main-class
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+apply plugin: 'java'
+apply plugin: 'application' // netbeans requires the run task this provides
+
+repositories {
+    mavenCentral()
+}
+
+//sourceCompatibility = 1.8
+//targetCompatibility = 1.8
+
+// required by plugin 'application' and used below
+mainClassName = 'com.isaacmack.kount.TodoMVC'
+
+// unnecessary if java source in src/main/java
+//sourceSets.main.java.srcDirs = ['src/main/java']
+
+dependencies {
+    compile "com.sparkjava:spark-core:+"
+    compile "org.slf4j:slf4j-simple:+"
+    compile "org.postgresql:postgresql:+"
+    compile "com.google.code.gson:gson:+"
+}
+
+
+// try using task shadowJar now
+// Output to build/libs/<baseName>.jar
+shadowJar {
+   baseName = 'TodoMVC'
+   classifier = ''
+   archiveVersion = ''
+}
